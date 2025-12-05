@@ -1,0 +1,82 @@
+package com.example.ssafy
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.ssafy.ui.theme.SSAFYTheme
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            SSAFYTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    MqttScreen(
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun MqttScreen(
+    modifier: Modifier = Modifier
+) {
+    val scope = rememberCoroutineScope()
+    var lastMessage by remember { mutableStateOf("no message") }
+
+    LaunchedEffect(Unit) {
+        MqttClientHelper.connect()
+    }
+
+    Column(
+        modifier = modifier
+    ) {
+        Text(text = "Last message: $lastMessage")
+
+        Button(onClick = {
+            MqttClientHelper.publish(
+                "KFC",
+                "26.0"
+            )
+        }) {
+            Text("보내기")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    SSAFYTheme {
+        Greeting("Android")
+    }
+}
