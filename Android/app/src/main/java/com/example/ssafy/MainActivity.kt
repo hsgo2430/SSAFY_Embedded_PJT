@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.ssafy.ui.theme.SSAFYTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.ssafy.ferature.MqttClientHelper
 
 
 class MainActivity : ComponentActivity() {
@@ -65,7 +66,7 @@ fun MqttScreen(
         Button(onClick = {
             MqttClientHelper.publish(
                 "KFC",
-                "26.0"
+                "장매물 발견"
             )
         }) {
             Text("보내기")

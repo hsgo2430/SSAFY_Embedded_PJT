@@ -1,4 +1,4 @@
-package com.example.ssafy
+package com.example.ssafy.ferature
 
 import android.util.Log
 import com.hivemq.client.mqtt.MqttClient
@@ -14,12 +14,12 @@ object MqttClientHelper {
     private const val TAG = "MQTT"
 
     // 브로커 정보 (네가 쓰는 Mosquitto IP/포트로 바꾸면 됨)
-    private const val BROKER_HOST = "IP주소"
+    private const val BROKER_HOST = "192.168.45.249"
     private const val BROKER_PORT = 1883
 
     private val client: Mqtt5AsyncClient by lazy {
         MqttClient.builder()
-            .useMqttVersion5() // MQTT 3.1.1 쓰고 싶으면 useMqttVersion3()
+            .useMqttVersion5()
             .identifier("android-${UUID.randomUUID()}")
             .serverHost(BROKER_HOST)
             .serverPort(BROKER_PORT)
