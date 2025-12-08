@@ -2,7 +2,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
     kotlin("kapt")
+}
+
+kapt{
+    correctErrorTypes = true
 }
 
 android {
@@ -67,10 +72,12 @@ dependencies {
 
     implementation(libs.compose.navigation)
 
+    implementation(libs.hilt.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
     implementation(project(":domain"))
     implementation(project(":data"))
-
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
