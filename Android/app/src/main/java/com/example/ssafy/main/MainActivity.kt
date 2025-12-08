@@ -1,4 +1,4 @@
-package com.example.ssafy
+package com.example.ssafy.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,8 +30,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             SSAFYTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MqttScreen(
-                        modifier = Modifier.padding(innerPadding)
+                    MainNavHost(
+                        modifier = Modifier.padding(innerPadding),
+                        startDestination = "mqtt_screen"
                     )
                 }
             }
@@ -45,33 +46,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         text = "Hello $name!",
         modifier = modifier
     )
-}
-
-@Composable
-fun MqttScreen(
-    modifier: Modifier = Modifier
-) {
-    val scope = rememberCoroutineScope()
-    var lastMessage by remember { mutableStateOf("no message") }
-
-    LaunchedEffect(Unit) {
-        MqttClientHelper.connect()
-    }
-
-    Column(
-        modifier = modifier
-    ) {
-        Text(text = "Last message: $lastMessage")
-
-        Button(onClick = {
-            MqttClientHelper.publish(
-                "KFC",
-                "장매물 발견"
-            )
-        }) {
-            Text("보내기")
-        }
-    }
 }
 
 @Preview(showBackground = true)
