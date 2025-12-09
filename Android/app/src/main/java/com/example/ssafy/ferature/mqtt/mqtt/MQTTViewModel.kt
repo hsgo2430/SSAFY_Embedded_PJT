@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.blockingIntent
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
@@ -21,11 +22,14 @@ class MQTTViewModel @Inject constructor(
 ):ViewModel(), ContainerHost<MQTTState, MQTTSideEffect> {
     override val container: Container<MQTTState, MQTTSideEffect>  = container<MQTTState, MQTTSideEffect>(MQTTState())
 
-    init{
-        viewModelScope.launch(Dispatchers.IO) {
-            connectMqttUseCase("qweq")
+    fun connectBtnClicked(
+        hostIP: String
+    ){
+        intent {
+            viewModelScope.launch(Dispatchers.IO) {
+                connectMqttUseCase(hostIP)
+            }
         }
-
     }
 
     fun sendBtnClicked(
@@ -35,6 +39,26 @@ class MQTTViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 sendMessageUseCase(message)
             }
+        }
+    }
+
+    fun onChangeMessage(
+        message: String
+    ) = blockingIntent{
+        reduce {
+            state.copy(
+                message = message
+            )
+        }
+    }
+
+    fun onChangeHostIP(
+        hostIP: String
+    ) = blockingIntent{
+        reduce {
+            state.copy(
+               hostIP = hostIP
+            )
         }
     }
 }
