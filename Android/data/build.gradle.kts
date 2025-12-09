@@ -43,6 +43,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(project(":domain"))
-    //implementation(libs.hilt.android)
-    //kapt(libs.hilt.compiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    implementation(libs.hivemqtt)
 }

@@ -1,4 +1,4 @@
-package com.example.ssafy.ferature
+package com.example.data.mqtt
 
 import android.util.Log
 import com.hivemq.client.mqtt.MqttClient
@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets
 import java.util.UUID
 
 object MqttClientHelper {
-
     private const val TAG = "MQTT"
 
     // 브로커 정보 (네가 쓰는 Mosquitto IP/포트로 바꾸면 됨)
