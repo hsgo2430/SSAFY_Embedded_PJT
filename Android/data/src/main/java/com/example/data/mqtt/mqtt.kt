@@ -16,14 +16,31 @@ object MqttClientHelper {
 
     private var client: Mqtt5AsyncClient? = null
 
-    /** 브로커에 연결 */
-    suspend fun connect(hostIP: String) = withContext(Dispatchers.IO) {
-        try {
+    suspend fun test(hostIP: String): Boolean = withContext(Dispatchers.IO) {
+        var testClient: Mqtt5AsyncClient? = null
+        runCatching {
 
+           testClient = MqttClient.builder()
+                .useMqttVersion5()
+                .identifier("android-${UUID.randomUUID()}")
+                .serverHost(hostIP)
+                .serverPort(BROKER_PORT)
+                .buildAsync()
+
+            testClient!!.connect().join()
+        }.onSuccess {
+            Log.d(TAG, "MQTT connected")
+            testClient!!.disconnect().join()
+        }.onFailure {
+            Log.e(TAG, "MQTT connect error", it)
+        }.isSuccess
+    }
+
+    suspend fun connect(hostIP: String): Boolean = withContext(Dispatchers.IO) {
+        runCatching {
             client?.disconnect()
             client = null
 
-            // 새로운 IP로 클라이언트 생성
             client = MqttClient.builder()
                 .useMqttVersion5()
                 .identifier("android-${UUID.randomUUID()}")
@@ -31,19 +48,12 @@ object MqttClientHelper {
                 .serverPort(BROKER_PORT)
                 .buildAsync()
 
-            // connect()는 CompletableFuture를 반환 → join()으로 완료될 때까지 대기
-            client!!.connect()
-                .whenComplete { _, throwable ->
-                    if (throwable != null) {
-                        Log.e(TAG, "MQTT connect error", throwable)
-                    } else {
-                        Log.d(TAG, "MQTT connected")
-                    }
-                }
-                .join()
-        } catch (e: Exception) {
-            Log.e(TAG, "MQTT connect exception", e)
-        }
+            client!!.connect().join()
+        }.onSuccess {
+            Log.d(TAG, "MQTT connected")
+        }.onFailure {
+            Log.e(TAG, "MQTT connect error", it)
+        }.isSuccess
     }
 
     /** 토픽 구독 + 메시지 콜백 */
