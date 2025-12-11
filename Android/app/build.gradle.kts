@@ -91,5 +91,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation("io.github.webrtc-sdk:android:137.7151.05")
 
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 }

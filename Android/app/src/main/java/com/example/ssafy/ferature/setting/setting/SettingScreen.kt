@@ -68,7 +68,7 @@ fun SettingScreen(
         testBtnClicked = settingViewModel::testBtnClicked
     )
 
-    HandleSideEffects(itemMarketViewModel, navigateToItemPriceDetailChartScreen, state.marketableItemIdList)
+    //HandleSideEffects(itemMarketViewModel, navigateToItemPriceDetailChartScreen, state.marketableItemIdList)
 }
 
 
@@ -336,7 +336,7 @@ fun SettingScreenImpl(
     }
 }
 
-@Composable
+/*@Composable
 private fun HandleSideEffects(
     viewModel: SettingViewModel,
     navigateToItemPriceDetailChartScreen: (Triple<Int, Int, String>) -> Unit = {},
@@ -357,7 +357,7 @@ private fun HandleSideEffects(
             }
         }
     }
-}
+}*/
 
 @Preview
 @Composable
