@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +51,7 @@ import com.example.ssafy.ui.theme.TestCardStrokeColor
 import com.example.ssafy.ui.theme.TextGray
 import com.example.ssafy.ui.theme.TextYellow
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun SettingScreen(
@@ -65,6 +67,8 @@ fun SettingScreen(
         onChangePath = settingViewModel::changePath,
         testBtnClicked = settingViewModel::testBtnClicked
     )
+
+    HandleSideEffects(itemMarketViewModel, navigateToItemPriceDetailChartScreen, state.marketableItemIdList)
 }
 
 
@@ -329,6 +333,29 @@ fun SettingScreenImpl(
             )
         }
 
+    }
+}
+
+@Composable
+private fun HandleSideEffects(
+    viewModel: SettingViewModel,
+    navigateToItemPriceDetailChartScreen: (Triple<Int, Int, String>) -> Unit = {},
+) {
+    val context = LocalContext.current
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is SettingSideEffect.ShowMessage -> {
+                val message = when (sideEffect.type) {
+                    ItemMarketErrorType.BlankItemName -> context.getString(R.string.blank_item_name)
+                    ItemMarketErrorType.WrongItemName -> context.getString(R.string.wrong_item_name)
+                    ItemMarketErrorType.NotSale -> context.getString(R.string.not_sale_item)
+                }
+                showMessage(message)
+            }
+            is SettingSideEffect.SuccessTest -> {
+
+            }
+        }
     }
 }
 
