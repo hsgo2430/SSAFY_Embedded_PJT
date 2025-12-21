@@ -23,7 +23,8 @@ class SettingViewModel @Inject constructor(
     fun changeHostIp(hostIp: String) = blockingIntent {
         reduce {
             state.copy(
-                hostIP = hostIp
+                hostIP = hostIp,
+                isHostIPBlank = hostIp.isBlank()
             )
         }
     }
@@ -31,18 +32,26 @@ class SettingViewModel @Inject constructor(
     fun changePath(path: String) = blockingIntent {
         reduce {
             state.copy(
-                path = path
+                path = path,
+                isPathBlank = path.isBlank()
             )
         }
     }
 
     fun testBtnClicked() = intent{
-        viewModelScope.launch {
-            if(testConnectUseCase(state.hostIP)){
-                Log.e("로그", "성공")
-            }
-            else{
-                Log.e("로그", "실패")
+        if(state.isHostIPBlank){
+            postSideEffect(SettingSideEffect.ShowMessage(SettingError.BlankIP))
+        }
+        else if(state.isPathBlank){
+            postSideEffect(SettingSideEffect.ShowMessage(SettingError.BlankPath))
+        }
+        else {
+            viewModelScope.launch {
+                if (testConnectUseCase(state.hostIP)) {
+                    postSideEffect(SettingSideEffect.SuccessTest)
+                } else {
+                    postSideEffect(SettingSideEffect.ShowMessage(SettingError.FailTest))
+                }
             }
         }
     }
