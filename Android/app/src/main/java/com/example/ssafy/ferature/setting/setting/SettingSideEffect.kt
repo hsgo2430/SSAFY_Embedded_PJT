@@ -4,7 +4,7 @@ sealed class SettingSideEffect {
 
     data object ConnectMQTTL: SettingSideEffect()
     data object SuccessTest: SettingSideEffect()
-    data object ShowMessage: SettingSideEffect()
+    data class ShowMessage(val type: SettingError): SettingSideEffect()
 
 }
 

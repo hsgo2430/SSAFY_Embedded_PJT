@@ -50,6 +50,7 @@ import com.example.ssafy.ui.theme.TestCardColor
 import com.example.ssafy.ui.theme.TestCardStrokeColor
 import com.example.ssafy.ui.theme.TextGray
 import com.example.ssafy.ui.theme.TextYellow
+import com.example.ssafy.util.showMessage
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -67,8 +68,7 @@ fun SettingScreen(
         onChangePath = settingViewModel::changePath,
         testBtnClicked = settingViewModel::testBtnClicked
     )
-
-    //HandleSideEffects(itemMarketViewModel, navigateToItemPriceDetailChartScreen, state.marketableItemIdList)
+    HandleSideEffects(settingViewModel)
 }
 
 
@@ -346,14 +346,29 @@ private fun HandleSideEffects(
         when (sideEffect) {
             is SettingSideEffect.ShowMessage -> {
                 val message = when (sideEffect.type) {
-                    ItemMarketErrorType.BlankItemName -> context.getString(R.string.blank_item_name)
-                    ItemMarketErrorType.WrongItemName -> context.getString(R.string.wrong_item_name)
-                    ItemMarketErrorType.NotSale -> context.getString(R.string.not_sale_item)
+                    SettingError.FailTest -> {
+                        context.getString(R.string.fail_test)
+                    }
+
+                    SettingError.NotConnect -> {
+                        context.getString(R.string.not_connect)
+                    }
+
+                    SettingError.BlankIP -> {
+                        context.getString(R.string.blank_ip)
+                    }
+
+                    SettingError.BlankPath -> {
+                        context.getString(R.string.blank_path)
+                    }
                 }
                 showMessage(message)
             }
             is SettingSideEffect.SuccessTest -> {
-
+                showMessage("테스트에 성공했습니다.")
+            }
+            is SettingSideEffect.ConnectMQTTL ->{
+                showMessage("MQTT연결에 성공했습니다.")
             }
         }
     }
