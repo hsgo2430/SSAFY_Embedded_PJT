@@ -68,7 +68,6 @@ fun SettingScreen(
         onChangePath = settingViewModel::changePath,
         testBtnClicked = settingViewModel::testBtnClicked
     )
-
     HandleSideEffects(settingViewModel)
 }
 
@@ -337,7 +336,7 @@ fun SettingScreenImpl(
     }
 }
 
-@Composable
+/*@Composable
 private fun HandleSideEffects(
     viewModel: SettingViewModel,
     navigateToItemPriceDetailChartScreen: (Triple<Int, Int, String>) -> Unit = {},
@@ -373,7 +372,7 @@ private fun HandleSideEffects(
             }
         }
     }
-}
+}*/
 
 @Preview
 @Composable
