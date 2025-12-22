@@ -57,41 +57,96 @@ fun MQTTScreenImpl(
         Text(text = "Last message: $lastMessage")
 
 
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = state.hostIP,
-            onValueChange = onChangeHostIP
-        )
+//        TextField(
+//            modifier = Modifier.fillMaxWidth(),
+//            value = state.hostIP,
+//            onValueChange = onChangeHostIP
+//        )
+//
+//        Button(
+//            modifier = Modifier
+//                .padding(top = 20.dp)
+//                .fillMaxWidth(),
+//            onClick = {
+//                connectBtnClicked(state.hostIP)
+//            }
+//        ) {
+//            Text("연결하기")
+//        }
+//
+//
+//        TextField(
+//            modifier = Modifier
+//                .padding(top = 20.dp)
+//                .fillMaxWidth(),
+//            value = state.message,
+//            onValueChange = onChangeMessage
+//        )
+//
+//        Button(
+//            modifier = Modifier
+//                .padding(top = 20.dp)
+//                .fillMaxWidth(),
+//            onClick = {
+//                sendBtnClicked(state.message)
+//            }
+//        ) {
+//            Text("보내기")
+//        }
 
         Button(
             modifier = Modifier
                 .padding(top = 20.dp)
                 .fillMaxWidth(),
             onClick = {
-                connectBtnClicked(state.hostIP)
+                sendBtnClicked("go")
             }
         ) {
-            Text("연결하기")
+            Text("전진")
         }
 
-
-        TextField(
+        Button(
             modifier = Modifier
                 .padding(top = 20.dp)
                 .fillMaxWidth(),
-            value = state.message,
-            onValueChange = onChangeMessage
-        )
+            onClick = {
+                sendBtnClicked("back")
+            }
+        ) {
+            Text("후진")
+        }
 
         Button(
             modifier = Modifier
                 .padding(top = 20.dp)
                 .fillMaxWidth(),
             onClick = {
-                sendBtnClicked(state.message)
+                sendBtnClicked("right")
             }
         ) {
-            Text("보내기")
+            Text("좌회전")
+        }
+
+        Button(
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .fillMaxWidth(),
+            onClick = {
+                sendBtnClicked("left")
+            }
+        ) {
+            Text("우회전")
+        }
+
+        Button(
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .fillMaxWidth(),
+            onClick = {
+                sendBtnClicked("stop")
+            }
+        ) {
+            Text("정지")
         }
 
     }

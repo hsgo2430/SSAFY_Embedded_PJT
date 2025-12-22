@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private  val testConnectUseCase: TestConnectUseCase
+    private  val testConnectUseCase: TestConnectUseCase,
+    private val connectMqttUseCase: ConnectMqttUseCase
 ): ViewModel(), ContainerHost<SettingState, SettingSideEffect> {
 
     override val container: Container<SettingState, SettingSideEffect> = container<SettingState, SettingSideEffect> (SettingState())
@@ -52,6 +53,17 @@ class SettingViewModel @Inject constructor(
                 } else {
                     postSideEffect(SettingSideEffect.ShowMessage(SettingError.FailTest))
                 }
+            }
+        }
+    }
+
+    fun saveBtnClicked() = intent{
+        viewModelScope.launch {
+            if(connectMqttUseCase(state.hostIP)){
+                postSideEffect(SettingSideEffect.ConnectMQTT)
+            }
+            else{
+                postSideEffect(SettingSideEffect.ShowMessage(SettingError.NotConnect))
             }
         }
     }

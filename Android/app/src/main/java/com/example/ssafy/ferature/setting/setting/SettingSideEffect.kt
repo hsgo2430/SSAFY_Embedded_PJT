@@ -2,7 +2,7 @@ package com.example.ssafy.ferature.setting.setting
 
 sealed class SettingSideEffect {
 
-    data object ConnectMQTTL: SettingSideEffect()
+    data object ConnectMQTT: SettingSideEffect()
     data object SuccessTest: SettingSideEffect()
     data class ShowMessage(val type: SettingError): SettingSideEffect()
 

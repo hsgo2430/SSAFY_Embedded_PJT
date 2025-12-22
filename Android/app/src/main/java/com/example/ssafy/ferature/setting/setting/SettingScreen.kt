@@ -57,6 +57,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun SettingScreen(
     modifier: Modifier = Modifier,
+    navigateToVideoScreen: (String) -> Unit = {},
     settingViewModel: SettingViewModel = hiltViewModel()
 ) {
     val state = settingViewModel.collectAsState().value
@@ -66,9 +67,10 @@ fun SettingScreen(
         state = state,
         onChangeHostIP = settingViewModel::changeHostIp,
         onChangePath = settingViewModel::changePath,
-        testBtnClicked = settingViewModel::testBtnClicked
+        testBtnClicked = settingViewModel::testBtnClicked,
+        saveBtnClicked = settingViewModel::saveBtnClicked
     )
-    HandleSideEffects(settingViewModel)
+    HandleSideEffects(settingViewModel, navigateToVideoScreen)
 }
 
 
@@ -78,7 +80,9 @@ fun SettingScreenImpl(
     state : SettingState = SettingState(),
     onChangeHostIP: (String) -> Unit = {},
     onChangePath: (String) -> Unit = {},
-    testBtnClicked: () -> Unit = {}
+    testBtnClicked: () -> Unit = {},
+    saveBtnClicked:() -> Unit = {}
+
 ) {
 
     Column(
@@ -284,7 +288,7 @@ fun SettingScreenImpl(
         }
 
         Button(
-            onClick = { /* save */ },
+            onClick = { saveBtnClicked() },
             modifier = Modifier
                 .padding(horizontal = 20.dp)
                 .padding(top = 40.dp)
@@ -336,12 +340,13 @@ fun SettingScreenImpl(
     }
 }
 
-/*@Composable
+@Composable
 private fun HandleSideEffects(
     viewModel: SettingViewModel,
-    navigateToItemPriceDetailChartScreen: (Triple<Int, Int, String>) -> Unit = {},
+    navigateToVideoScreen: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
+    val state = viewModel.collectAsState().value
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is SettingSideEffect.ShowMessage -> {
@@ -367,12 +372,13 @@ private fun HandleSideEffects(
             is SettingSideEffect.SuccessTest -> {
                 showMessage("테스트에 성공했습니다.")
             }
-            is SettingSideEffect.ConnectMQTTL ->{
+            is SettingSideEffect.ConnectMQTT ->{
                 showMessage("MQTT연결에 성공했습니다.")
+                navigateToVideoScreen(state.hostIP)
             }
         }
     }
-}*/
+}
 
 @Preview
 @Composable
