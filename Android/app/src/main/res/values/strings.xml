@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SSAFY</string>
+    <string name="blank_ip">IP가 비워져 있습니다.</string>
+    <string name="blank_path">MQTT 경로가 비워져 있습니다.</string>
+    <string name="fail_test">MQTT 연결 테스트에 실패했습니다\n다시 시도해주십시오.</string>
+    <string name="not_connect">MQTT 연결이 되지 않았습니다.\n다시 시도해주십시오.</string>
 </resources>
