@@ -5,11 +5,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.ssafy.ferature.control.navigator.controlScreen
 import com.example.ssafy.ferature.mqtt.navigator.mqttScreen
 import com.example.ssafy.ferature.setting.navigator.settingScreen
 
 const val MQTTSCREEN = "mqtt_screen"
 const val SETTINGSCREEN = "setting_screen"
+
+const val CONTROLSCREEN = "control_screen"
 
 @Composable
 fun MainNavHost(
@@ -27,6 +30,11 @@ fun MainNavHost(
         )
 
         mqttScreen(
+            modifier = modifier,
+            navController = navController
+        )
+
+        controlScreen(
             modifier = modifier,
             navController = navController
         )

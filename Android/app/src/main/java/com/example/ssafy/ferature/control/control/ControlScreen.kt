@@ -29,14 +29,16 @@ import org.webrtc.SurfaceViewRenderer
 fun ControlScreen(
     modifier: Modifier = Modifier
 ) {
-
+    ControlScreenImpl(
+        modifier = modifier
+    )
 }
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun ControlScreenImpl(
     modifier: Modifier = Modifier,
-    piIP: String = "192.168.45.240"
+    piIP: String = "192.168.137.138"
 ) {
     val context = LocalContext.current
 
