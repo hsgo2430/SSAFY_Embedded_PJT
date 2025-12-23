@@ -47,4 +47,7 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     implementation(libs.hivemqtt)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.rxjava2)
+    implementation(libs.retrofit.converter.gson)
 }
