@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.style.TextAlign.Companion.Center
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.ssafy.R
-import com.example.ssafy.ferature.control.control.MediamtxWhepClient
 import org.webrtc.EglBase
 import org.webrtc.SurfaceViewRenderer
 
@@ -88,17 +87,6 @@ fun MQTTScreenImpl(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-
-
-
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(300.dp)
-//                .background(color = Color.Black)
-//        ){
-//
-//        }
             AndroidView(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -111,44 +99,6 @@ fun MQTTScreenImpl(
                     }
                 }
             )
-
-//        TextField(
-//            modifier = Modifier.fillMaxWidth(),
-//            value = state.hostIP,
-//            onValueChange = onChangeHostIP
-//        )
-//
-//        Button(
-//            modifier = Modifier
-//                .padding(top = 20.dp)
-//                .fillMaxWidth(),
-//            onClick = {
-//                connectBtnClicked(state.hostIP)
-//            }
-//        ) {
-//            Text("연결하기")
-//        }
-//
-//
-//        TextField(
-//            modifier = Modifier
-//                .padding(top = 20.dp)
-//                .fillMaxWidth(),
-//            value = state.message,
-//            onValueChange = onChangeMessage
-//        )
-//
-//        Button(
-//            modifier = Modifier
-//                .padding(top = 20.dp)
-//                .fillMaxWidth(),
-//            onClick = {
-//                sendBtnClicked(state.message)
-//            }
-//        ) {
-//            Text("보내기")
-//        }
-
 
 
         Text(

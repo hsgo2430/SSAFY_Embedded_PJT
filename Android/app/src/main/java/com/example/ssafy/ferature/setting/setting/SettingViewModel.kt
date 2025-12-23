@@ -3,6 +3,7 @@ package com.example.ssafy.ferature.setting.setting
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.usecase.image.GetImageGroupsUseCase
 import com.example.domain.usecase.mqtt.ConnectMqttUseCase
 import com.example.domain.usecase.mqtt.TestConnectUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +17,27 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private  val testConnectUseCase: TestConnectUseCase,
-    private val connectMqttUseCase: ConnectMqttUseCase
+    private val connectMqttUseCase: ConnectMqttUseCase,
+    private val getImageGroupsUseCase: GetImageGroupsUseCase
 ): ViewModel(), ContainerHost<SettingState, SettingSideEffect> {
 
     override val container: Container<SettingState, SettingSideEffect> = container<SettingState, SettingSideEffect> (SettingState())
+
+
+    init{
+        test()
+    }
+
+    fun test() = intent{
+        viewModelScope.launch {
+            getImageGroupsUseCase().onSuccess {
+
+            }
+                .onFailure {
+                    postSideEffect(SettingSideEffect.ShowMessage(SettingError.FailTest))
+                }
+        }
+    }
 
     fun changeHostIp(hostIp: String) = blockingIntent {
         reduce {

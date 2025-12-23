@@ -50,4 +50,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.rxjava2)
     implementation(libs.retrofit.converter.gson)
+
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
 }
