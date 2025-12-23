@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,11 +28,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.style.TextAlign.Companion.Center
+import androidx.compose.ui.viewinterop.AndroidView
 import com.example.ssafy.R
+import com.example.ssafy.ferature.control.control.MediamtxWhepClient
+import org.webrtc.EglBase
+import org.webrtc.SurfaceViewRenderer
 
 
 @Composable
@@ -60,25 +67,50 @@ fun MQTTScreenImpl(
     sendBtnClicked : (String) -> Unit = {},
     onChangeMessage: (String) -> Unit = {},
     onChangeHostIP: (String) -> Unit = {},
-    connectBtnClicked: (String) -> Unit = {}
+    connectBtnClicked: (String) -> Unit = {},
+    piIP: String = "192.168.137.138"
 ) {
-    var lastMessage by remember { mutableStateOf("no message") }
+    val context = LocalContext.current
+
+    // 🔥 EGL Base 1개만 생성해야 함
+    val eglBase = remember { EglBase.create() }
+
+    val renderer = remember {
+        SurfaceViewRenderer(context)
+    }
+
+    // 🔥 Client는 동일 eglBase 사용
+    val whepClient = remember {
+        MediamtxWhepClient(renderer, eglBase)
+    }
 
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        Text(text = "Last message: $lastMessage")
 
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .background(color = Color.Black)
-        ){
 
-        }
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(300.dp)
+//                .background(color = Color.Black)
+//        ){
+//
+//        }
+            AndroidView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                factory = {
+                    renderer.apply {
+                        init(eglBase.eglBaseContext, null)
+                        setEnableHardwareScaler(true)
+                        setMirror(false)
+                    }
+                }
+            )
 
 //        TextField(
 //            modifier = Modifier.fillMaxWidth(),
@@ -192,63 +224,16 @@ fun MQTTScreenImpl(
             contentDescription = ""
         )
 
+        LaunchedEffect(piIP) {
+            whepClient.start("http://$piIP:8889/cam1/whep")
+        }
 
-
-//        Button(
-//            modifier = Modifier
-//                .padding(top = 20.dp)
-//                .fillMaxWidth(),
-//            onClick = {
-//                sendBtnClicked("go")
-//            }
-//        ) {
-//            Text("전진")
-//        }
-//
-//        Button(
-//            modifier = Modifier
-//                .padding(top = 20.dp)
-//                .fillMaxWidth(),
-//            onClick = {
-//                sendBtnClicked("back")
-//            }
-//        ) {
-//            Text("후진")
-//        }
-//
-//        Button(
-//            modifier = Modifier
-//                .padding(top = 20.dp)
-//                .fillMaxWidth(),
-//            onClick = {
-//                sendBtnClicked("right")
-//            }
-//        ) {
-//            Text("좌회전")
-//        }
-//
-//        Button(
-//            modifier = Modifier
-//                .padding(top = 20.dp)
-//                .fillMaxWidth(),
-//            onClick = {
-//                sendBtnClicked("left")
-//            }
-//        ) {
-//            Text("우회전")
-//        }
-//
-//        Button(
-//            modifier = Modifier
-//                .padding(top = 20.dp)
-//                .fillMaxWidth(),
-//            onClick = {
-//                sendBtnClicked("stop")
-//            }
-//        ) {
-//            Text("정지")
-//        }
-
+        DisposableEffect(Unit) {
+            onDispose {
+                whepClient.release()
+                eglBase.release()
+            }
+        }
     }
 }
 
