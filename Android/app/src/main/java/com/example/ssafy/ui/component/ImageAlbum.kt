@@ -1,28 +1,30 @@
 package com.example.ssafy.ui.component
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Divider
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import coil.compose.AsyncImage
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.times
-import coil.compose.AsyncImage
 import com.example.domain.model.ImageItem
 import com.example.ssafy.ui.theme.DividerColor
 
@@ -32,13 +34,16 @@ fun AlbumComponent(
     dateString: String = "2025-12-25",
     imageList: List<ImageItem> = emptyList(),
 ) {
+    // ✅ 클릭한 이미지 저장
+    var selected by rememberSaveable { mutableStateOf<ImageItem?>(null) }
+
     val columns = 3
     val itemSize = 100.dp
     val spacing = 10.dp
     val rows = (imageList.size + columns - 1) / columns
     val gridHeight =
         if (rows == 0) 0.dp
-        else rows * itemSize + (rows - 1) * spacing + 20.dp // contentPadding(10.dp) 상+하
+        else rows * itemSize + (rows - 1) * spacing + 20.dp
 
     Column(
         modifier = modifier
@@ -66,10 +71,58 @@ fun AlbumComponent(
             items(imageList, key = { it.id }) { image ->
                 AsyncImage(
                     model = "https://5d64831169ed.ngrok-free.app${image.image_url}",
-                    placeholder = painterResource(com.example.ssafy.R.drawable.left_button),
+                    placeholder = painterResource(com.example.ssafy.R.drawable.loading),
                     contentDescription = "아이템 이미지",
-                    modifier = Modifier.size(itemSize)
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(itemSize)
+                        .clickable { selected = image }
                 )
+            }
+        }
+    }
+
+    if (selected != null) {
+        Dialog(onDismissRequest = { selected = null }) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) { selected = null },
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp)
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {  }
+                ) {
+                    AsyncImage(
+                        model = "https://5d64831169ed.ngrok-free.app${selected!!.image_url}",
+                        placeholder = painterResource(com.example.ssafy.R.drawable.loading),
+                        contentDescription = "확대 이미지",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f) // 원하면 제거 가능
+                    )
+
+                    IconButton(
+                        onClick = { selected = null },
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "닫기",
+                            tint = Color.White
+                        )
+                    }
+                }
             }
         }
     }

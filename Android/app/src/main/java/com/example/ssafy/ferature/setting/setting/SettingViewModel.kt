@@ -60,13 +60,13 @@ class SettingViewModel @Inject constructor(
 
     fun saveBtnClicked() = intent{
         viewModelScope.launch {
-            postSideEffect(SettingSideEffect.ConnectMQTT)
-//            if(connectMqttUseCase(state.hostIP)){
-//                postSideEffect(SettingSideEffect.ConnectMQTT)
-//            }
-//            else{
-//                postSideEffect(SettingSideEffect.ShowMessage(SettingError.NotConnect))
-//            }
+            //(SettingSideEffect.ConnectMQTT)
+            if(connectMqttUseCase(state.hostIP)){
+                postSideEffect(SettingSideEffect.ConnectMQTT)
+            }
+            else{
+                postSideEffect(SettingSideEffect.ShowMessage(SettingError.NotConnect))
+            }
         }
     }
 
