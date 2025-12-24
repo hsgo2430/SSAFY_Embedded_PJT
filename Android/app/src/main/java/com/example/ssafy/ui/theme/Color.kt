@@ -21,3 +21,5 @@ val TextYellow = Color(0xFF854D0E)
 val TextFieldC = Color(0xFFF9FAFB)
 val TestCardColor = Color(0xFFFEFCE8)
 val TestCardStrokeColor = Color(0xFFFDE047)
+
+val DividerColor = Color(0xFFE5E7EB)

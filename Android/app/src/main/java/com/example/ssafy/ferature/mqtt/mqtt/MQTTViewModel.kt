@@ -78,4 +78,8 @@ class MQTTViewModel @Inject constructor(
             )
         }
     }
+
+    fun albumBtnClicked() = intent{
+        postSideEffect(MQTTSideEffect.NavigateAlbum)
+    }
 }

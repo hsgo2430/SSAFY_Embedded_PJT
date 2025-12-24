@@ -2,9 +2,9 @@ package com.example.data.constant
 
 object ServerConstant {
 
-    const val BASE_URL = "https://a9e22790b941.ngrok-free.app"
+    const val BASE_URL = "https://5d64831169ed.ngrok-free.app"
 
     object Image{
-        const val Gruoped = "/api/grouped"
+        const val Gruoped = "/api/images/grouped"
     }
 }

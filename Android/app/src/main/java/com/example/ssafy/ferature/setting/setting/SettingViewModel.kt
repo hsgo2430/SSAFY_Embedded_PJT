@@ -18,26 +18,9 @@ import javax.inject.Inject
 class SettingViewModel @Inject constructor(
     private  val testConnectUseCase: TestConnectUseCase,
     private val connectMqttUseCase: ConnectMqttUseCase,
-    private val getImageGroupsUseCase: GetImageGroupsUseCase
 ): ViewModel(), ContainerHost<SettingState, SettingSideEffect> {
 
     override val container: Container<SettingState, SettingSideEffect> = container<SettingState, SettingSideEffect> (SettingState())
-
-
-    init{
-        test()
-    }
-
-    fun test() = intent{
-        viewModelScope.launch {
-            getImageGroupsUseCase().onSuccess {
-
-            }
-                .onFailure {
-                    postSideEffect(SettingSideEffect.ShowMessage(SettingError.FailTest))
-                }
-        }
-    }
 
     fun changeHostIp(hostIp: String) = blockingIntent {
         reduce {
@@ -77,12 +60,13 @@ class SettingViewModel @Inject constructor(
 
     fun saveBtnClicked() = intent{
         viewModelScope.launch {
-            if(connectMqttUseCase(state.hostIP)){
-                postSideEffect(SettingSideEffect.ConnectMQTT)
-            }
-            else{
-                postSideEffect(SettingSideEffect.ShowMessage(SettingError.NotConnect))
-            }
+            postSideEffect(SettingSideEffect.ConnectMQTT)
+//            if(connectMqttUseCase(state.hostIP)){
+//                postSideEffect(SettingSideEffect.ConnectMQTT)
+//            }
+//            else{
+//                postSideEffect(SettingSideEffect.ShowMessage(SettingError.NotConnect))
+//            }
         }
     }
 

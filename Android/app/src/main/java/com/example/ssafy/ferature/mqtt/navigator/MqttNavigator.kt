@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.ssafy.ferature.mqtt.mqtt.MQTTScreen
+import com.example.ssafy.main.ALBUMSCREEN
 import com.example.ssafy.main.MQTTSCREEN
 
 fun NavGraphBuilder.mqttScreen(
@@ -28,7 +29,10 @@ fun NavGraphBuilder.mqttScreen(
             )
         ) {
             MQTTScreen(
-                modifier = modifier
+                modifier = modifier,
+                navigateToAlbumScreen = {
+                    navController.navigate(ALBUMSCREEN)
+                }
             )
         }
     }

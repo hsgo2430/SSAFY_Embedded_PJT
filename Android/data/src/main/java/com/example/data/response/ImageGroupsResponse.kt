@@ -6,6 +6,6 @@ data class ImageGroupsResponse(
     @SerializedName("count")
     val count: Int,
 
-    @SerializedName("ImageGroup")
+    @SerializedName("groups")
     val groups: List<ImageGroupResponse>
 )

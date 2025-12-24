@@ -15,7 +15,6 @@ class ImageRepositoryImpl @Inject constructor(
     override suspend fun getImageGroups(): Result<ImageGroups> {
         return try {
             val groups = imageRemoteDataSource.getImageGroups().toImageGroups()
-            Log.d("로그", groups.toString())
             Result.success(groups)
         } catch (e: HttpException) {
             Result.failure(e)
